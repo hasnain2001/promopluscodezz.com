@@ -24,7 +24,6 @@
                 <a href="{{ route('admin.dashboard') }}" class="menu-link">
                     <span class="menu-icon"><i class="fas fa-tachometer-alt"></i></span>
                     <span class="menu-text"> admin Dashboard</span>
-                    <span class="menu-badge"><span class="badge bg-success rounded-pill">New</span></span>
                 </a>
             </li>
 
