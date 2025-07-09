@@ -5,11 +5,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () { return view('welcome');});
 
-Route::get('/dashboard', function () {return view('dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {return view('dashboard');})->middleware()->name('dashboard');
 
-// Route::middleware([RoleMiddleware::class])->group( function(){
-//     Route::get('/user/dashboard', function () {  return view('dashboard');})->name('dashboard');
-// });
+Route::middleware(['auth', 'role:user'])->group( function(){
+    Route::get('/dashboard', function () {  return view('dashboard');})->name('dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,3 +28,5 @@ Route::get('/language', function() {
     return view('language.index'); // You'll need to create this view for listing
 });
 require __DIR__.'/auth.php';
+require __DIR__.'/admin.php';
+require __DIR__.'/employee.php';

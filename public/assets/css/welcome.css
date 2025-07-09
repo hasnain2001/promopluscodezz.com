@@ -1,0 +1,410 @@
+.welcome-hr {
+    border: none;
+    border-top: 3px dashed #e63946; /* Dashed border */
+    height: 0;
+    background: none;
+    border-radius: 0;
+    opacity: 0.8;
+    margin: 1.5rem 15%;
+    transition: all 0.4s ease;
+}
+
+/* Optional: Add a hover animation */
+ .welcome-hr:hover {
+    opacity: 1;
+    border-top-width: 4px;
+    border-top-color: #e63946;
+}
+       /* slider Section */
+
+    .hero-slider {
+        position: relative;
+    }
+
+    .carousel-item {
+        height: 200px;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.5s ease;
+    }
+
+    .carousel-item:hover img {
+        transform: scale(1.03);
+    }
+
+    .slide-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        color: white;
+        padding: 2rem;
+        padding-top: 4rem;
+    }
+
+    .slide-overlay h2 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+    .slider-title{
+        font-size: 15px;
+    }
+
+    .slide-overlay p {
+        font-size: 1.125rem;
+        margin-bottom: 1rem;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .shop-now-btn {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: all 0.3s ease;
+        background-color: rgba(0,0,0,0.9);
+        color: white;
+        border: 2px solid white;
+        padding: 12px 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 30px;
+        text-decoration: none;
+    }
+
+    .carousel-item:hover .shop-now-btn {
+        opacity: 1;
+    }
+
+    .shop-now-btn:hover {
+        background-color: white;
+        color: black;
+        text-decoration: none;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 5%;
+    }
+
+    .carousel-indicators button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin: 0 5px;
+        border: none;
+        background-color: rgba(255,255,255,0.5);
+    }
+
+    .carousel-indicators button.active {
+        background-color: white;
+    }
+    .slider-image{
+        width:100%;
+    }
+
+    @media (max-width: 768px) {
+        .hero-slider{
+            height: 100px;
+        }
+        .carousel-item {
+            height:100px;
+        }
+
+        .slide-overlay h2 {
+            font-size: 1.5rem;
+        }
+
+        .slide-overlay p {
+            font-size: 1rem;
+        }
+      .carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.5s ease;
+    }
+
+    }
+    /* store Section */
+
+    .stores-section {
+        position: relative;
+    }
+
+    .store-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 15px !important;
+    }
+
+    .store-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+
+    .store-image-container {
+        position: relative;
+        margin: 0 auto;
+        width: 150px;
+        height: 150px;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        width: 40px;
+        height: 40px;
+        background: white;
+        border: 1px solid #dee2e6;
+        color: #000000;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .store-heading h1 {
+        font-size: 25px;
+        font-weight: 500;
+        color: #22223b;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        background: linear-gradient(90deg, #e63946 0%, #e63946 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 8px rgba(255, 204, 51, 0.15);
+    }
+    .store-heading p{
+
+    }
+    .swiper-button-prev {
+        left: -20px;
+    }
+
+    .swiper-button-next {
+        right: -20px;
+    }
+
+    .swiper-button-prev::after,
+    .swiper-button-next::after {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+        .swiper-button-prev,
+        .swiper-button-next {
+            display: none;
+        }
+
+        .store-image-container {
+            width: 120px;
+            height: 120px;
+        }
+    }
+/* Coupon Card Container */
+.couponcode {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.coupon-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+/* Button Styles with Hidden Code */
+.get-code-btn {
+    padding: 10px 20px;
+    background-color: #e63946;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    text-transform: uppercase;
+}
+
+.get-code-btn:hover {
+    color: white;
+    background-color: #ea0b1e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.get-code-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+}
+
+.btn-text {
+    flex-grow: 1;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.code-preview {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    position: relative;
+    margin-right: 10px;
+}
+
+.code-preview::before {
+    content: "•••";
+    letter-spacing: 2px;
+    margin-right: 5px;
+    opacity: 0.7;
+}
+
+/* Corner Flag */
+.corner-flag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 30px 30px 0;
+    border-color: transparent #ff6b6b transparent transparent;
+}
+
+/* Other styles remain the same as previous example */
+.ribbon-wrapper {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+.ribbon {
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.ribbon.verified {
+    background: linear-gradient(135deg, #ff5e62, #ff2400);
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.ribbon.exclusive {
+    background: linear-gradient(135deg, #4776E6, #8E54E9);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.store-logo {
+    padding: 20px 10px 0;
+}
+
+.store-img {
+    height: 100px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.coupon-card:hover .store-img {
+    transform: scale(1.05);
+}
+
+.coupon-info {
+    position: relative;
+    z-index: 1;
+}
+
+.coupon-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.3;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.expiry-badge .badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 50px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+}
+
+.deal-btn {
+    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.deal-btn:hover {
+    background: linear-gradient(135deg, #c2e9fb 0%, #a1c4fd 100%);
+    color: #333;
+    transform: translateY(-2px);
+}
+
+.coupon-footer {
+    position: relative;
+    z-index: 1;
+}
+ /* blog styles*/
+  .blog-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 12px;
+    }
+
+    .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+
+    .transition-scale {
+        transition: transform 0.5s ease;
+    }
+
+    .blog-card:hover .transition-scale {
+        transform: scale(1.05);
+    }
+
+    .object-cover {
+        object-fit: cover;
+    }
+
+    .hover-shadow:hover {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .transition-all {
+        transition: all 0.3s ease;
+    }
