@@ -221,6 +221,27 @@
                         </div>
                     </div>
                 </div>
+                   <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card widget-card hover-scale" style="border-left: 4px solid #000000;">
+                        <div class="card-body p-1">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-1">
+                                    <div class="avatar-md rounded-circle d-flex align-items-center justify-content-center"
+                                         style="background-color: rgba(0, 0, 0, 0.1); color: #28241f;">
+                                        <i class="fas fa-user font-24"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 text-end">
+                                    <h3 class="mb-1 text-dark fw-bold"><span class="counter" data-target="{{$users}}">0</span></h3>
+                                    <p class="text-muted mb-0">Total user</p>
+                                    <a href="{{route('admin.user.index')}}" class="stretched-link text-decoration-none">
+                                        <small class="text-warning">View Details <i class="fas fa-arrow-right ms-1"></i></small>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 

@@ -128,7 +128,7 @@
 
                                     <div class="mb-3">
                                         <label for="network_id" class="form-label">Affiliate Network <span class="text-danger">*</span></label>
-                                        <select name="network_id" id="network_id" class="form-select" >
+                                        <select name="network_id" id="network_id" class="form-select" required>
                                             <option value="" disabled selected>-- Select network --</option>
                                             @foreach ($networks as $network)
                                                 <option value="{{ $network->id }}" data-language="{{ $network->network_id ?? '' }}" {{ old('network_id') == $network->id ? 'selected' : '' }}>

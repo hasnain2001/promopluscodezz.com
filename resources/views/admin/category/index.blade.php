@@ -1,84 +1,148 @@
 @extends('admin.layouts.datatable')
-@section('title', 'Cetgory List')
+
 @section('content')
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="header-title"> Category Data Table</h4>
-                <p class="text-muted font-13 mb-4">
-                    The user data table displays a list of all users in the system. You can view, edit, and delete users from this table.
-                    <br> You can also add new users by clicking the "Add category" button.
-                </p>
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2>Categories Management</h2>
+        </div>
+    </div>
 
-                <a href="{{ route('admin.category.create') }}" class="btn btn-primary mb-3">Add category</a>
-                {{-- <a href="{{ route('admin.user.export') }}" class="btn btn-success mb-3">Export Users</a> --}}
-                @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fa fa-check-circle" aria-hidden="true"></i>
-                    <strong>Success!</strong> {{ session('success') }}
-
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="language_filter">Filter by Language:</label>
+                                <select class="form-control" id="language_filter" name="language_id">
+                                    <option value="">All Languages</option>
+                                    @foreach($languages as $language)
+                                        <option value="{{ $language->id }}" {{ $selectedLanguage == $language->id ? 'selected' : '' }}>
+                                            {{ $language->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button id="filter-btn" class="btn btn-primary">Filter</button>
+                            <button id="reset-btn" class="btn btn-secondary ml-2">Reset</button>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <a href="{{ route('admin.category.create') }}" class="btn btn-success">
+                                <i class="fas fa-plus"></i> Add New Category
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            @endif
-                <table id="basic-datatable" class="table dt-responsive nowrap w-100">
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>Name</th>
-                           <th>Image</th>
-                           <th>lang</th>
-                           <th>Created/Updated By
-                           </th>
-                           <th>Created/Updated At
-                           </th>
-                           <th>top</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
+            </div>
+        </div>
+    </div>
 
-
-                    <tbody>
-                        @foreach ($categories as $category)
-                        <tr>
-
-                            <td>{{ $loop->iteration }}</td>
-                            <td><small>{{ $category->name }}</small></td>
-                            <td><img class=" img-thumbnail" src="{{ asset('uploads/categories/' . $category->image) }}" style="width:80px;"></td>
-                            <td>
-                                @if(isset($category->language) && !empty($category->language->name))
-                                    <span class="badge bg-light text-dark">{{ $category->language->name }}</span>
-                                @else
-                                    <span class="badge bg-secondary">N/A</span>
-                                @endif
-                            </td>
-                            <td>
-                                <br>
-                                <small class="text-muted">Created by: {{ $category->user->name ?? 'N/A' }}</small>
-                                <br>
-                                <small class="text-muted">Updated by: {{ $category->updatedby->name ?? 'N/A' }}</small>
-                            </td>
-                            <td>
-                                <small class="text-muted">Created at: {{ $category->created_at->setTimezone('Asia/Karachi')->format('l, F j, Y h:i A') }}</small>
-                                <br>
-                                <small class="text-muted">Updated at: {{ $category->updated_at->setTimezone('Asia/Karachi')->format('l, F j, Y h:i A') }}</small>
-                            </td>
-                            <td>{{ $category->top_category ? 'Yes' : 'No' }}</td>
-                            <td><a href="{{ route('admin.category.edit', $category->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                            <form action="{{ route('admin.category.destroy', $category->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" onclick=" return confirm('are you sure to delete  this ') " class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                            </td>
-
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-            </div> <!-- end card body-->
-        </div> <!-- end card -->
-    </div><!-- end col-->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="basic-datatable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Slug</th>
+                                    <th>image</th>
+                                    <th>Language</th>
+                                    <th>Status</th>
+                                    <th>Created By</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categories-container">
+                                @include('admin.category.partials.categories', ['categories' => $categories])
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- end row-->
+@endsection
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const languageFilter = document.getElementById('language_filter');
+    const filterBtn = document.getElementById('filter-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const categoriesContainer = document.getElementById('categories-container');
+
+    // Function to load categories via AJAX
+    function loadCategories(languageId) {
+        const url = "{{ route('admin.category.index') }}";
+        const params = new URLSearchParams();
+
+        if (languageId) {
+            params.append('language_id', languageId);
+        }
+
+        // Show loading state
+        categoriesContainer.innerHTML = `
+            <tr>
+                <td colspan="8" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 mb-0">Loading categories...</p>
+                </td>
+            </tr>
+        `;
+
+        fetch(`${url}?${params.toString()}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            categoriesContainer.innerHTML = data.html;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            categoriesContainer.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center text-danger py-4">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                        <p class="mb-0">Error loading categories. Please try again.</p>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // Filter button click handler
+    filterBtn.addEventListener('click', function() {
+        const languageId = languageFilter.value;
+        loadCategories(languageId);
+    });
+
+    // Reset button click handler
+    resetBtn.addEventListener('click', function() {
+        languageFilter.value = '';
+        loadCategories('');
+    });
+
+    // Optional: Auto-filter when language selection changes
+    languageFilter.addEventListener('change', function() {
+        const languageId = this.value;
+        loadCategories(languageId);
+    });
+});
+</script>
 @endsection

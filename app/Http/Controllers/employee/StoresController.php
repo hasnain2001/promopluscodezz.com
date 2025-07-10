@@ -7,7 +7,7 @@ use App\Models\Coupon;
 use App\Models\Language;
 use App\Models\DeleteRequest;
 use App\Models\Network;
-use App\Models\Stores;
+use App\Models\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -23,7 +23,7 @@ class StoresController extends Controller
     public function index(  )
     {
 
-        $stores = Stores::with('language','network')->select('id','slug','name','category_id','image','created_at','status','network_id','language_id')
+        $stores = Store::with('language','network')->select('id','slug','name','category_id','image','created_at','status','network_id','language_id')
         ->orderBy('created_at','desc')
         ->get();
           return view('employee.stores.index', compact('stores', ));
@@ -32,7 +32,7 @@ class StoresController extends Controller
     {
         $slug = Str::slug($name);
         $title = ucwords(str_replace('-', ' ', $slug));
-        $store = Stores::where('slug', $title)->first();
+        $store = Store::where('slug', $title)->first();
 
         if (!$store) {
             return redirect('404');
@@ -89,7 +89,7 @@ class StoresController extends Controller
                 }
         $request->merge(['image' => $imageName]);
 
-        $store = new Stores();
+        $store = new Store();
         $store->language_id = $request->language_id;
         $store->user_id = Auth::id();
         $store->category_id = $request->category_id;
@@ -118,7 +118,7 @@ class StoresController extends Controller
     {
         $slug = Str::slug($name);
         $title = ucwords(str_replace('-', ' ', $slug));
-        $store = Stores::where('slug', $title)->first();
+        $store = Store::where('slug', $title)->first();
 
         if (!$store) {
             return redirect('404');
@@ -137,7 +137,7 @@ class StoresController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Stores $stores)
+    public function edit(Store $stores)
     {
         $categories = Category::orderBy('created_at', 'desc')->get();
         $networks = Network::orderBy('created_at', 'desc')->get();
@@ -150,7 +150,7 @@ class StoresController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Stores $stores)
+    public function update(Request $request, Store $stores)
     {
         $request->validate([
            'name' => 'required|string|max:255',
@@ -214,7 +214,7 @@ class StoresController extends Controller
      */
         public function destroy($id)
         {
-            $store = Stores::findOrFail($id);
+            $store = Store::findOrFail($id);
 
             // Example: If you want to always create a delete request, remove the if statement
             // Create a delete request
@@ -225,7 +225,7 @@ class StoresController extends Controller
 
             return redirect()->back()->with('success', 'Delete request sent to admin for approval.');
 
-     $this->authorize('delete', $store);
+               $this->authorize('delete', $store);
 
             // Delete the image if it exists
             if ($store->image && file_exists(public_path('uploads/stores/'.$store->image))) {
@@ -244,22 +244,23 @@ class StoresController extends Controller
         public function deleteSelected(Request $request)
         {
             $ids = $request->input('ids');
-            if ($ids) {
-                foreach ($ids as $id) {
-                    $store = Stores::findOrFail($id);
-                    // Delete the image if it exists
-                    if ($store->image && file_exists(public_path('uploads/stores/'.$store->image))) {
-                        unlink(public_path('uploads/stores/'.$store->image));
-                    }
-                    // Delete related coupons
-                    $store->coupons()->delete();
-                    // Delete the store
-                    $store->delete();
-                }
-                return redirect()->route('employee.store.index')->with('success', 'Selected stores deleted successfully.');
-            } else {
+
+            if (!$ids || empty($ids)) {
                 return redirect()->route('employee.store.index')->with('error', 'No stores selected for deletion.');
             }
+
+            foreach ($ids as $id) {
+                $store = Store::findOrFail($id);
+
+                // Create a delete request for each selected store
+                DeleteRequest::create([
+                    'store_id' => $store->id,
+                    'user_id' => Auth::id(),
+                ]);
+            }
+
+            return redirect()->route('employee.store.index')
+                ->with('success', 'Delete requests for selected stores have been sent to admin for approval.');
         }
 
 

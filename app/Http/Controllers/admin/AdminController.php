@@ -14,11 +14,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class AdminController extends Controller
 {
-
-       public function dashboard()
+    public function dashboard()
     {
         $coupons = Coupon::count();
         $categories =Category::count();

@@ -12,9 +12,12 @@
                             Manage all stores in the system. View, edit, or delete stores below.
                         </p>
                     </div>
-                    <div>
+                    <div class="d-grid gap-2 d-flex">
                         <a href="{{ route('admin.store.create') }}" class="btn btn-primary">
                             <i class="mdi mdi-plus-circle-outline"></i> Add New Store
+                        </a>
+                        <a href="{{ route('admin.coupon.create') }}" class="btn btn-warning">
+                            <i class="mdi mdi-plus-circle-outline"></i> Add New coupon
                         </a>
                     </div>
                 </div>
@@ -78,7 +81,7 @@
                                         </div>
                                     </td>
                                     <td><small>{{ $store->category->name ?? 'N/A' }}</small></td>
-                                    <td><small>{{ $store->network->title  }}</small></td>
+                                    <td><small>{{ $store->network->title ?? 'Null' }}</small></td>
                                     <td>
                                         <small class="text-muted">
                                             {{ $store->language ? $store->language->name : 'N/A' }}

@@ -22,7 +22,7 @@ class Network extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
 
-    public function user(): Blongsto
+    public function user()
     {
     return $this->belongsTo(User::class,'user_id');
     }

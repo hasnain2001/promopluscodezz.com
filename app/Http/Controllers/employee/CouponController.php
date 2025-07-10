@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Coupon;
-use App\Models\Stores;
+use App\Models\Store;
 use App\Models\Language;
 
 class CouponController extends Controller
@@ -86,7 +86,7 @@ class CouponController extends Controller
      */
     public function create()
     {
-        $stores = Stores::orderBy('created_at','desc')->get();
+        $stores = Store::orderBy('created_at','desc')->get();
         $languages = Language::orderBy('created_at', 'desc')->get();
         return view('employee.coupon.create', compact('stores', 'languages'));
 
@@ -141,7 +141,7 @@ class CouponController extends Controller
      */
     public function edit(Coupon $coupon)
     {
-        $stores = Stores::orderBy('created_at','desc')->get();
+        $stores = Store::orderBy('created_at','desc')->get();
         $languages = Language::orderBy('created_at', 'desc')->get();
         return view('employee.coupon.edit', compact('coupon', 'stores', 'languages'));
     }
@@ -179,7 +179,7 @@ class CouponController extends Controller
             $coupon->save();
 
             // Get the store (either from updated store_id or existing)
-            $store = Stores::find($coupon->store_id);
+            $store = Store::find($coupon->store_id);
 
             if (!$store) {
                 throw new \Exception('Associated store not found');

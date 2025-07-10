@@ -106,77 +106,77 @@
 @section('scripts')
 <script >
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Store filter functionality
-    const storeSelect = document.getElementById('storeSelect');
-    const tablecontents = document.getElementById('tablecontents');
-    const couponCount = document.getElementById('couponCount');
-    const resetFilter = document.getElementById('resetFilter');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Store filter functionality
+        const storeSelect = document.getElementById('storeSelect');
+        const tablecontents = document.getElementById('tablecontents');
+        const couponCount = document.getElementById('couponCount');
+        const resetFilter = document.getElementById('resetFilter');
 
-    storeSelect.addEventListener('change', function() {
-        const storeId = this.value;
-        const url = "{{ route('employee.coupon.index') }}";
-        const params = new URLSearchParams();
+        storeSelect.addEventListener('change', function() {
+            const storeId = this.value;
+            const url = "{{ route('employee.coupon.index') }}";
+            const params = new URLSearchParams();
 
-        if (storeId) {
-            params.append('store_id', storeId);
-        }
-
-        // Show loading state
-        tablecontents.innerHTML = `
-            <tr>
-                <td colspan="9" class="text-center py-4">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="mt-2 mb-0">Loading coupons...</p>
-                </td>
-            </tr>
-        `;
-
-        fetch(`${url}?${params.toString()}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
+            if (storeId) {
+                params.append('store_id', storeId);
             }
-        })
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        })
-        .then(data => {
-            tablecontents.innerHTML = data.html;
-            couponCount.textContent = document.querySelectorAll('#tablecontents tr[data-id]').length;
 
-            // Initialize tooltips for new content
-            if (window.bootstrap && window.bootstrap.Tooltip) {
-                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-                tooltipTriggerList.map(function (tooltipTriggerEl) {
-                    return new bootstrap.Tooltip(tooltipTriggerEl);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
+            // Show loading state
             tablecontents.innerHTML = `
                 <tr>
-                    <td colspan="9" class="text-center text-danger py-4">
-                        <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
-                        <p class="mb-0">Error loading coupons. Please try again.</p>
+                    <td colspan="9" class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2 mb-0">Loading coupons...</p>
                     </td>
                 </tr>
             `;
+
+            fetch(`${url}?${params.toString()}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                tablecontents.innerHTML = data.html;
+                couponCount.textContent = document.querySelectorAll('#tablecontents tr[data-id]').length;
+
+                // Initialize tooltips for new content
+                if (window.bootstrap && window.bootstrap.Tooltip) {
+                    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                    tooltipTriggerList.map(function (tooltipTriggerEl) {
+                        return new bootstrap.Tooltip(tooltipTriggerEl);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                tablecontents.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="text-center text-danger py-4">
+                            <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                            <p class="mb-0">Error loading coupons. Please try again.</p>
+                        </td>
+                    </tr>
+                `;
+            });
         });
+
+        // Reset filter functionality
+        resetFilter.addEventListener('click', function() {
+            storeSelect.value = '';
+            storeSelect.dispatchEvent(new Event('change'));
+        });
+
+
     });
-
-    // Reset filter functionality
-    resetFilter.addEventListener('click', function() {
-        storeSelect.value = '';
-        storeSelect.dispatchEvent(new Event('change'));
-    });
-
-
-});
 </script>
 
 @endsection

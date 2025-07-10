@@ -33,7 +33,7 @@ Route::middleware(['auth','role:employee'])->group(function() {
         Route::put('/store/update/{stores}', 'update')->name('store.update');
         Route::delete('/store/{id}',  'destroy')->name('store.destroy');
         Route::get('/Store/{slug}', 'show')->name('store.show');
-        Route::delete('/store/deleteSelected', 'deleteSelected')->name('store.deleteSelected');
+        Route::post('/store/deleteSelected',  'deleteSelected')->name('store.deleteSelected');
         Route::get('/store/{slug}/store', 'store_detail')->name('store.details');
 
         });

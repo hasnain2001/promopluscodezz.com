@@ -55,7 +55,7 @@
                                 </td>
                                 <td><small>{{ $store->name }}</small></td>
                                 <td><small>{{ $store->category->name ?? Null }}</small></td>
-                                <td>{{ $store->network->title }}</td>
+                                <td>{{ $store->network->title ?? "N/A" }}</td>
                                 <td>
                                     @if(isset($store->language) && !empty($store->language->name))
                                         <span class="badge bg-light text-dark">{{ $store->language->name }}</span>
@@ -100,26 +100,6 @@
 @endsection
 
 @section('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Select all checkboxes
-        $('#selectAll').click(function() {
-            $('.select-checkbox').prop('checked', this.checked);
-        });
 
-        // Delete selected button click
-        $('#deleteSelected').click(function(e) {
-            e.preventDefault(); // Prevent default button behavior
 
-            if ($('.select-checkbox:checked').length > 0) {
-                if (confirm('Are you sure you want to delete the selected stores?')) {
-                    $('#deleteForm').submit();
-                }
-            } else {
-                alert('Please select at least one store to delete.');
-            }
-        });
-    });
-</script>
 @endsection
